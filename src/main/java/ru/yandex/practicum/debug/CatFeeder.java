@@ -15,8 +15,12 @@ public class CatFeeder {
 
     public void weeklyFeed(int dailyRation) {
         for (int i = 1; i <= 7; i++) {
+            if (balance < dailyRation) {
+                LOGGER.error("Недостаточно корма. Осталось: " + this.balance + ". Нужно корма: " + ((dailyRation - balance) + dailyRation * (7 - i)));
+                return;
+            }
             LOGGER.info("День '" + i + "', остаток корма: '" + this.balance + "'");
-            printDayType(DayOfWeek.values()[i-1]);
+            printDayType(DayOfWeek.values()[i - 1]);
             this.balance -= dailyRation;
         }
     }
@@ -24,9 +28,9 @@ public class CatFeeder {
     private static void printDayType(DayOfWeek day) {
         switch (day) {
             case SATURDAY:
-                LOGGER.debug("Выходной день.");
             case SUNDAY:
                 LOGGER.debug("Выходной день.");
+                break;
             default:
                 LOGGER.debug("Рабочий день.");
         }
